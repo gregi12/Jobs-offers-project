@@ -116,4 +116,70 @@ diffrent_skills = ['data mining','data Mining','application Design','application
 
 hook = 0
 
+# so I looked into the data a bit and decied to get informations about salary as I planned before
+features[7]
+type(features[0])
+''.join(features[0])
+features[228]
+
+# Eventually ,after quite some time I came up with this.
+import re
+salary_dict = {}
+def look_up(pattern):
+    hook = 0
+    for text in features:
+        try:
+            sample = ''.join(text)
+            salary = re.search(pattern,sample)
+            print(salary)
+            salary_dict[hook]= salary.group()
+        except:
+            hook+=1
+            print('Not match',hook)
+        else:
+            hook += 1
+
+
+# Variable hook is always the same number as indexes from dataframe 
+# so keys from dictonary are also indexes in dataframe
+
+
+#I manually added some strange results and then I them from my dictionary
+
+look_up(r'\d+–\d+\san\shour')
+look_up(r'\d+K–\d+K')
+look_up(r'\W\d+–\W\d+K')
+look_up(r'\W\d+K–\W\d+K')
+look_up(r'US\W\d+–US\W\d+')
+
+for key in [356,392,395,401,412,426,434,437,446,448]:
+    salary_dict.pop(key)
+    
+#And now I'm stacked a bit 
+for salary in df['salary']:
+    hook=0
+    if salary==NaN:
+        try:
+            salary = salary_dict
+        except:
+            hook+=1
+            print('nana')
+        else:
+            hook+=1
+            continue
+
+#Unfortunetly I can't add values from my dict into dataframe
+
+for hook in range(10):
+    x= df['salary'][hook]
+    print(type(x))
+    print(hook)
+    if type(x)==float:
+        try:
+            x= df['salary'][hook]
+            df['salary'][hook] == salary_dict[hook]
+        except:
+            print('Lipa')
+            continue
+            
 
